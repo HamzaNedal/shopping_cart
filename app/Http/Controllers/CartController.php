@@ -44,8 +44,12 @@ class CartController extends Controller
 
         ]);
         if($stripe['id']){
+            auth()->user()->orders()->create([
+                'cart'=>serialize(session('cart')),
+            ]);
             session()->forget('cart');
-            return redirect(route('products'));
+            toast('Done','success');
+            return redirect()->route('products');
         }else{
             return redirect()->back();
         }
